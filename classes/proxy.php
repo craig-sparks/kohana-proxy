@@ -2,7 +2,7 @@
 
 class Proxy {
 
-	public function connect($url)
+	public function connect($url, $additional_options = array())
 	{
 		do
 		{
@@ -13,15 +13,16 @@ class Proxy {
 
 			try
 			{
-				$response = $this->do_request($proxy->get_host(), $url);
+				$response = $this->do_request($proxy->get_full_host(), $url, $proxy->get_curl_auth(), $additional_options);
 				$success = TRUE;
+				$proxy->mark_used(TRUE, NULL, 'Success');
 			}
 			catch(Kohana_Request_Exception $e)
 			{
 				$proxy->mark_used(False, Date::HOUR, $e->getMessage());
 			}
 		}
-		while($proxy->loaded() === FALSE OR $success === TRUE);
+		while($success === FALSE || $proxy->loaded() === FALSE);
 
 		if($success === FALSE)
 		{
@@ -31,10 +32,14 @@ class Proxy {
 		return $response;
 	}
 
-	protected function do_request($proxy_url, $url)
+	protected function do_request($proxy_url, $url, $username_password = NULL, $additional_options = array())
 	{
+		$options = $additional_options +
+			array(CURLOPT_PROXY => $proxy_url,CURLOPT_PROXYUSERPWD => $username_password, CURLOPT_FAILONERROR => TRUE);
+
 		$request = Request::factory($url);
-		$request->client()->options(CURLOPT_PROXY, $proxy_url);
-		return $request->execute()->body();
+		$request->client()->options($options);
+
+		return $request;
 	}
 }
