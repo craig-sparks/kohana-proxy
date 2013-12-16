@@ -46,11 +46,11 @@ class Model_Proxy extends ORM {
 	{
 		if($success === TRUE)
 		{
-			$this->connection_successful++;
+			$this->connections_successful++;
 		}
 		else
 		{
-			$this->connection_errors++;
+			$this->connections_errors++;
 
 			if($disable_time !== NULL)
 			{
@@ -58,7 +58,7 @@ class Model_Proxy extends ORM {
 			}
 		}
 
-		$this->last_used = strtotime('Y-m-d h:i:s');
+		$this->last_connection = strtotime('Y-m-d h:i:s');
 
 		$this->save();
 	}
