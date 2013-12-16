@@ -58,7 +58,7 @@ class Model_Proxy extends ORM {
 			}
 		}
 
-		$this->last_connection = strtotime('Y-m-d h:i:s');
+		$this->last_connection = strtotime('Y-m-d H:i:s');
 
 		$this->save();
 	}
