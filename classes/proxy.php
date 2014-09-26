@@ -38,7 +38,7 @@ class Proxy {
 	{
 		$options = $additional_options +
 			array(CURLOPT_PROXY => $proxy_url,CURLOPT_PROXYUSERPWD => $username_password, CURLOPT_FAILONERROR => TRUE,
-				  CURLOPT_USERAGENT => $this->_user_agent, CURLOPT_FOLLOWLOCATION => TRUE, CURLOPT_VERBOSE => TRUE);
+				  CURLOPT_USERAGENT => $this->_user_agent, CURLOPT_FOLLOWLOCATION => TRUE);
 
 		$request = Request::factory($url);
 
